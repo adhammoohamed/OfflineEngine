@@ -1,4 +1,4 @@
-package com.example.offlineengine.ui.theme
+package com.example.offlineengine.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
