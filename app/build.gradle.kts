@@ -4,17 +4,17 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
-    // ✅ kapt REMOVED — using KSP only. Mixing kapt + ksp causes annotation
-    //    processor conflicts and doubles your build time.
+    alias(libs.plugins.protobuf)  // ✅ add this
+
 }
 
 android {
     namespace   = "com.example.offlineengine"
-    compileSdk  = 35   // ✅ was: compileSdk { version = release(36) } — exotic syntax removed
+    compileSdk  = 35
 
     defaultConfig {
         applicationId          = "com.example.offlineengine"
-        minSdk                 = 26   // ✅ was 32 — dropping to 26 covers ~98% of devices
+        minSdk                 = 26   //
         targetSdk              = 35
         versionCode            = 1
         versionName            = "1.0"
@@ -66,6 +66,21 @@ android {
                 "META-INF/LICENSE.md",
                 "META-INF/LICENSE-notice.md"
             )
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.26.1"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
         }
     }
 }
@@ -122,10 +137,21 @@ dependencies {
     implementation(libs.hilt.work)
     ksp(libs.hilt.work.compiler)        // ✅ ksp only — no kapt
 
+
+    implementation(libs.datastore.preferences)  // Preferences DataStore
+    implementation(libs.datastore.proto)         // Proto DataStore
+    implementation(libs.protobuf.javalite)       // Proto runtime
+
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.android.material:material:1.12.0")
+
     // ─── Testing ──────────────────────────────────────────────────────────
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+
 }

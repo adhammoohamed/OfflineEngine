@@ -21,7 +21,8 @@ fun ScreenWithStatusBar(
     // darkIcons = true  → dark/black icons  → use on LIGHT backgrounds
     // darkIcons = false → light/white icons  → use on DARK backgrounds
     darkIcons: Boolean = false,
-    content: @Composable () -> Unit
+    backgroundColor: Color = Color.White,
+    content: @Composable () -> Unit,
 ) {
     // Control icon color — works on all API levels
     StatusBarIconEffect(darkIcons = darkIcons)
@@ -30,7 +31,7 @@ fun ScreenWithStatusBar(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
+                .statusBarsPadding().background(color = backgroundColor)
         ) {
             content()
         }

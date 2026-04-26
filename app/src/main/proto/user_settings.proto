@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.example.offlineengine.data.local.datastore.proto";
+option java_multiple_files = true;
+
+message UserSettings {
+  string country        = 1;
+  string language   = 2;
+  bool darkTheme          = 3;
+  bool   notifications_enabled = 4;
+  bool automaticDownloads    = 5;
+  bool onboarded = 6;
+
+  // Nested message example
+  ReadingPreferences reading_preferences = 7;
+}
+
+message ReadingPreferences {
+  bool   show_images      = 1;
+  bool   compact_mode     = 2;
+  string default_category = 3;
+}

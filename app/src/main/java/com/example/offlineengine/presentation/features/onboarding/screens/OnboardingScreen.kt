@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,31 +34,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.offlineengine.R
 import com.example.offlineengine.presentation.componenets.ScreenWithStatusBar
+import com.example.offlineengine.presentation.features.onboarding.viewmodel.OnboardingViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier) {
+fun OnboardingScreen(
+    modifier: Modifier = Modifier,
+    viewModel: OnboardingViewModel,
+    onNext: () -> Unit,
+    onBack: () -> Unit,
+    onFinish: () -> Unit
+) {
+    val pagerState = rememberPagerState(pageCount = { viewModel.pages.size }, initialPage = 0)
+    val selectedIndex = pagerState.currentPage
+    val coroutineScope = rememberCoroutineScope()
 
-    val pages = listOf(
-        OnboardingPage(
-            image = R.drawable.onboarding_1,
-            title = "Lorem Ipsum is simply dummy",
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        ),
-        OnboardingPage(
-            image = R.drawable.onboarding_2,
-            title = "Lorem Ipsum is simply dummy",
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        ),
-        OnboardingPage(
-            image = R.drawable.onboarding_3,
-            title = "Lorem Ipsum is simply dummy",
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        )
-    )
-
-    val pagerState = rememberPagerState(pageCount = { pages.size }, initialPage = 0)
-
-// In OnboardingScreen.kt
     ScreenWithStatusBar(
         modifier = modifier,
         statusBarColor = if (pagerState.currentPage == 0) colorResource(R.color.navy) else colorResource(
@@ -71,11 +62,26 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
                 .background(colorResource(R.color.white))
         ) {
             HorizontalPager(state = pagerState) { page ->
-                OnboardingPageItem(page = pages[page])
+                OnboardingPageItem(page = viewModel.pages[page])
             }
             OnboardingBottomSection(
-                totalDots = pages.size,
-                selectedIndex = pagerState.currentPage
+                totalDots = viewModel.pages.size,
+                selectedIndex = selectedIndex,
+                onBackClicked = {
+                    onBack()
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(viewModel.currentPage.value)
+                    }
+                },
+                onNextClicked = {
+                    onNext()
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(viewModel.currentPage.value)
+                    }
+                },
+                onFinish = {
+                    onFinish()
+                }
             )
         }
     }
@@ -109,7 +115,10 @@ fun OnboardingPageItem(page: OnboardingPage) {
 fun OnboardingBottomSection(
     modifier: Modifier = Modifier,
     selectedIndex: Int,
-    totalDots: Int
+    totalDots: Int,
+    onNextClicked: () -> Unit = {},
+    onBackClicked: () -> Unit = {},
+    onFinish: () -> Unit = {}
 ) {
     val buttonText = remember(selectedIndex) {
         when {
@@ -128,11 +137,14 @@ fun OnboardingBottomSection(
     ) {
         DotsIndicator(totalDots = totalDots, selectedIndex = selectedIndex)
         Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(4.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = colorResource(R.color.navy)
+            onClick = {
+                when {
+                    selectedIndex == 0 -> onNextClicked()
+                    selectedIndex <= totalDots - 2 -> onBackClicked()
+                    else -> onFinish()
+                }
+            }, shape = RoundedCornerShape(4.dp), colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White, containerColor = colorResource(R.color.navy)
             )
         ) {
             Text(text = buttonText)
@@ -158,7 +170,5 @@ fun DotsIndicator(totalDots: Int, selectedIndex: Int) {
 }
 
 data class OnboardingPage(
-    val image: Int,
-    val title: String,
-    val description: String
+    val image: Int, val title: String, val description: String
 )
