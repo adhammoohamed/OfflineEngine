@@ -7,22 +7,20 @@
     <application
         android:name=".OfflineEngine"
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.App.Splash"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules">
+
         <activity
             android:name=".presentation.MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.OfflineEngine">
+            android:theme="@style/Theme.App.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

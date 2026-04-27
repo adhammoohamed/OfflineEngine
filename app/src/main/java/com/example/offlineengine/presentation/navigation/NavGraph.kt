@@ -1,15 +1,15 @@
 package com.example.offlineengine.presentation.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.offlineengine.presentation.AppViewModel
+import com.example.offlineengine.presentation.features.home.navigation.homeNavGraph
 import com.example.offlineengine.presentation.features.onboarding.navgraph.onboardingGraph
 import com.example.offlineengine.presentation.features.select_country.navigation.selectYourCountry
-import com.example.offlineengine.presentation.features.splash.navigation.splashNavGraph
+import com.example.offlineengine.presentation.features.router.navigation.routerNavGraph
 
 @Composable
 fun AppNavGraph(
@@ -18,11 +18,11 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Router.route  // ALWAYS static
     ) {
-        splashNavGraph(navController)
+        routerNavGraph(navController, appViewModel)
         onboardingGraph(navController)
-        selectYourCountry()
-//        homeGraph(navController)
+        selectYourCountry(navController)
+        homeNavGraph(navController)
     }
 }

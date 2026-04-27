@@ -1,14 +1,25 @@
 package com.example.offlineengine.presentation.features.select_country.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.offlineengine.domain.usecase.UserSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectYourCountryViewModel @Inject constructor() : ViewModel(){
+class SelectYourCountryViewModel @Inject constructor(
+    private val userSettingsUseCase: UserSettingsUseCase
+) : ViewModel() {
     val countries = listOf(
         Country("ae", "United Arab Emirates", "🇦🇪"),
         Country("ar", "Argentina", "🇦🇷"),
@@ -67,11 +78,30 @@ class SelectYourCountryViewModel @Inject constructor() : ViewModel(){
     )
 
     private val _searchText = MutableStateFlow("")
-    val searchText: StateFlow<String> = _searchText.asStateFlow()
+    val searchText = _searchText.asStateFlow()
 
     private val _selectedCountryCode = MutableStateFlow<String?>(null)
     val selectedCountryCode = _selectedCountryCode.asStateFlow()
 
+    @OptIn(FlowPreview::class)
+    val filteredCountries = searchText
+        .debounce(300)
+        .distinctUntilChanged()
+        .map { query ->
+            if (query.isBlank()) {
+                countries
+            } else {
+                countries.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                            it.code.contains(query, ignoreCase = true)
+                }
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = countries
+        )
 
     fun updateSearchText(text: String) {
         _searchText.value = text
@@ -79,6 +109,12 @@ class SelectYourCountryViewModel @Inject constructor() : ViewModel(){
 
     fun selectCountryCode(code: String) {
         _selectedCountryCode.value = code
+    }
+
+    fun saveUserCountry() {
+        viewModelScope.launch {
+            userSettingsUseCase.updateCountry(_selectedCountryCode.value!!)
+        }
     }
 }
 

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Your main app theme -->
-    <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Theme.App" parent="Theme.Material3.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
-    <!-- Splash theme — wraps main theme -->
     <style name="Theme.App.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/new_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.App</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <!-- Add these two to suppress action bar during splash transition -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
