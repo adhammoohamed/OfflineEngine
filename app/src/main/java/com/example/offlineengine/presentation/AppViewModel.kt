@@ -33,6 +33,7 @@ AppViewModel @Inject constructor(
         return when {
             !user.onboarded -> StartDestination.Onboarding
             user.country.isEmpty() -> StartDestination.SelectCountry
+            user.category.isEmpty() && user.country.isNotEmpty() -> StartDestination.SelectCategory
             else -> StartDestination.Home
         }
     }
@@ -47,5 +48,6 @@ sealed interface StartupState {
 enum class StartDestination {
     Onboarding,
     SelectCountry,
+    SelectCategory,
     Home
 }

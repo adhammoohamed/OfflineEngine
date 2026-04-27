@@ -14,6 +14,7 @@ class UserSettingsSerializer @Inject constructor() : Serializer<UserSettings> {
     override val defaultValue: UserSettings = UserSettings.newBuilder()
         .setCountry("")
         .setLanguage("")
+        .setCategory("")
         .setDarkTheme(false)
         .setNotificationsEnabled(true)
         .setAutomaticDownloads(true)

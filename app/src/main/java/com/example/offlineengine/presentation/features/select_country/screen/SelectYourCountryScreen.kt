@@ -99,7 +99,7 @@ fun SelectYourCountryScreen(modifier: Modifier = Modifier, onNext: () -> Unit) {
 //                                    viewModel.updateSearchText(country.name)
                                     viewModel.selectCountryCode(country.code)
                                 }, colors = CardDefaults.cardColors(
-                                containerColor = if (isSelected) colorResource(R.color.teal_200) else Color.White
+                                containerColor = if (isSelected) colorResource(R.color.primary) else Color.White
                             )
                         ) {
                             Row(
@@ -137,7 +137,7 @@ fun SelectYourCountryScreen(modifier: Modifier = Modifier, onNext: () -> Unit) {
                             .padding(horizontal = 24.dp)
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.teal_200)
+                            containerColor = colorResource(R.color.primary)
                         ),
                         shape = RoundedCornerShape(8.dp),
                         onClick = {

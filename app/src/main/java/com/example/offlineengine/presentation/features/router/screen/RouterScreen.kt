@@ -33,6 +33,7 @@ fun RouterScreen(
             val route = when (destination) {
                 StartDestination.Onboarding -> Screen.Onboarding.route
                 StartDestination.SelectCountry -> Screen.SelectCountry.route
+                StartDestination.SelectCategory -> Screen.SelectCategory.route
                 StartDestination.Home -> Screen.Home.route
             }
 

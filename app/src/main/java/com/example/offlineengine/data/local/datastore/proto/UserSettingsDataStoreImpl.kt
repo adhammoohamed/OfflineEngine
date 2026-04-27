@@ -26,6 +26,12 @@ class UserSettingsDataStoreImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateCategory(category: String) {
+        dataStore.updateData { proto ->
+            proto.toBuilder().setCategory(category).build()
+        }
+    }
+
     override suspend fun updateCountry(country: String) {
         dataStore.updateData { proto ->
             proto.toBuilder().setCountry(country).build()
@@ -97,7 +103,7 @@ class UserSettingsDataStoreImpl @Inject constructor(
 
     override suspend fun toggleOnboardingState() {
         dataStore.updateData { proto ->
-            Log.d("userSettingsUseCase","toggleOnboardingState: ${proto.onboarded}")
+            Log.d("userSettingsUseCase", "toggleOnboardingState: ${proto.onboarded}")
             proto.toBuilder().setOnboarded(!proto.onboarded).build()
         }
     }

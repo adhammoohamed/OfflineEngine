@@ -10,6 +10,7 @@ import com.example.offlineengine.presentation.features.home.navigation.homeNavGr
 import com.example.offlineengine.presentation.features.onboarding.navgraph.onboardingGraph
 import com.example.offlineengine.presentation.features.select_country.navigation.selectYourCountry
 import com.example.offlineengine.presentation.features.router.navigation.routerNavGraph
+import com.example.offlineengine.presentation.features.select_category.navigation.selectCategory
 
 @Composable
 fun AppNavGraph(
@@ -23,6 +24,7 @@ fun AppNavGraph(
         routerNavGraph(navController, appViewModel)
         onboardingGraph(navController)
         selectYourCountry(navController)
+        selectCategory(navController)
         homeNavGraph(navController)
     }
 }

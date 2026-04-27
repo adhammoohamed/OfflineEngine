@@ -13,6 +13,7 @@ class UserSettingsUseCase @Inject constructor(
     fun getUserSettings() = repository.getUserSettings()
     suspend fun setUserSettings(userSettings: UserSettingsDomain) = repository.setUserSettings(userSettings)
     suspend fun updateCountry(country: String) = repository.updateCountry(country)
+    suspend fun updateCategory(category: String) = repository.updateCategory(category)
     suspend fun toggleDarkMode() = repository.toggleDarkMode()
     suspend fun toggleNotifications() = repository.toggleNotifications()
     suspend fun toggleAutomaticDownloads() = repository.toggleAutomaticDownloads()

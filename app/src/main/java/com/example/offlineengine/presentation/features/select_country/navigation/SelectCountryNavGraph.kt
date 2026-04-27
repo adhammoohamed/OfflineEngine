@@ -9,7 +9,7 @@ import com.example.offlineengine.presentation.navigation.Screen
 fun NavGraphBuilder.selectYourCountry(navController: NavHostController) {
     composable(route = Screen.SelectCountry.route) {
         SelectYourCountryScreen {
-            navController.navigate(Screen.Home.route)
+            navController.navigate(Screen.SelectCategory.route)
         }
     }
 }

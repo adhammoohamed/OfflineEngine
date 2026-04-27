@@ -10,9 +10,10 @@ message UserSettings {
   bool   notifications_enabled = 4;
   bool automaticDownloads    = 5;
   bool onboarded = 6;
+  string category = 7;
 
   // Nested message example
-  ReadingPreferences reading_preferences = 7;
+  ReadingPreferences reading_preferences = 8;
 }
 
 message ReadingPreferences {

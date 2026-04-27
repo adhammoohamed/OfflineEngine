@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 data class UserSettingsDomain(
     val country: String,
     val language: String,
+    val category: String,
     val darkTheme: Boolean,
     val notificationsEnabled: Boolean,
     val automaticDownloads: Boolean,
@@ -37,6 +38,7 @@ fun UserSettingsDomain.toProto(): UserSettings {
     return UserSettings.newBuilder()
         .setCountry(country)
         .setLanguage(language)
+        .setCategory(category)
         .setDarkTheme(darkTheme)
         .setNotificationsEnabled(notificationsEnabled)
         .setAutomaticDownloads(automaticDownloads)
@@ -49,6 +51,7 @@ fun UserSettings.toDomain(): UserSettingsDomain {
     return UserSettingsDomain(
         country = country,
         language = language,
+        category = category,
         darkTheme = darkTheme,
         notificationsEnabled = notificationsEnabled,
         automaticDownloads = automaticDownloads,
@@ -60,6 +63,7 @@ fun UserSettings.toDomain(): UserSettingsDomain {
 interface UserSettingsRepository {
     fun getUserSettings(): Flow<UserSettingsDomain>
     suspend fun setUserSettings(userSettings: UserSettingsDomain)
+    suspend fun updateCategory(category: String)
     suspend fun updateCountry(country: String)
     suspend fun toggleDarkMode()
     suspend fun toggleNotifications()
