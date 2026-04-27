@@ -1,7 +1,7 @@
 package com.example.offlineengine.domain.usecase
 
-import com.example.offlineengine.domain.repository.ReadingPreferencesDomain
-import com.example.offlineengine.domain.repository.UserSettingsDomain
+import com.example.offlineengine.domain.model.ReadingPreferencesDomain
+import com.example.offlineengine.domain.model.UserSettingsDomain
 import com.example.offlineengine.domain.repository.UserSettingsRepository
 import javax.inject.Inject
 import javax.inject.Singleton

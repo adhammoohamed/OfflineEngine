@@ -2,11 +2,11 @@ package com.example.offlineengine.data.local.datastore.proto
 
 import android.util.Log
 import androidx.datastore.core.DataStore
-import com.example.offlineengine.domain.repository.ReadingPreferencesDomain
-import com.example.offlineengine.domain.repository.UserSettingsDomain
+import com.example.offlineengine.data.mapper.toDomain
+import com.example.offlineengine.data.mapper.toProto
+import com.example.offlineengine.domain.model.ReadingPreferencesDomain
+import com.example.offlineengine.domain.model.UserSettingsDomain
 import com.example.offlineengine.domain.repository.UserSettingsRepository
-import com.example.offlineengine.domain.repository.toDomain
-import com.example.offlineengine.domain.repository.toProto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
